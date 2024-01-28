@@ -2,9 +2,20 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-const config = require('./client/src/config')
-const axios = require('axios')
-const dotenv = require('dotenv')
+const axios = require('axios');
+const dotenv = require('dotenv');
+dotenv.config();
+const cors = require('cors');
+app.use(cors());
+
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
 
 const PORT = process.env.PORT || 5000;
 
@@ -22,7 +33,7 @@ app.post("/user", async (req, res) => {
   
     const headers = {
       accept: "application/json",
-      Authorization: `bearer ${config.apiKey}`,
+      Authorization: `bearer ${process.env.ALLOY_API_KEY}`,
       "content-type": "application/json",
     };
   
@@ -36,13 +47,13 @@ app.post("/user", async (req, res) => {
   });
 
 // Get short-lived JWT
-app.get("/token/:userId", async (req, res) => {
+app.get("/token/:userId", async (req, res) => {  
     const options = {
       method: "GET",
       url: `https://embedded.runalloy.com/2023-12/users/${req.params.userId}/token`,
       headers: {
         accept: "application/json",
-        Authorization: `bearer ${config.apiKey}`,
+        Authorization: `bearer ${process.env.ALLOY_API_KEY}`,
       },
     };
     let response;
