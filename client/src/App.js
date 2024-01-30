@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { baseUrl } from "./config";
 import './App.css';
-import { connectionId } from "alloy-node/utils.mjs";
 
 function App() {
   const [showInput, setShowInput] = useState(true);
@@ -64,8 +63,9 @@ function App() {
 
   const createInvoice = async () => {
     // Define invoice details inside the method
+    console.log(connectionId)
     const invoiceDetails = {
-      customerId: connectionId,
+      customerId: "John Customer",
       lineItems: [
         {
           description: "November Services",
@@ -103,7 +103,7 @@ function App() {
     <div className="container">
       {showInput && <div className="form-style">
         <form className="form-style" onSubmit={handleFormSubmit}>
-          <h1>Let's set up a Quickbooks integration with Alloy!</h1>
+          <h1>Let's set up a QuickBooks integration with Alloy!</h1>
           <p>Enter a username to create an account</p>
           <input type="text" name="username" className="input-style" />
           <button type="submit" className="button-style">Submit</button>

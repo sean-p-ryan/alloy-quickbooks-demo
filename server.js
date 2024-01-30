@@ -29,6 +29,8 @@ app.post("/user", async (req, res) => {
     if (!userId) {
       return res.status(400).send("No userId provided");
     }
+
+    console.log(userId.connectionId)
   
     const headers = {
       accept: "application/json",
@@ -37,7 +39,7 @@ app.post("/user", async (req, res) => {
     };
   
     try {
-      const { data } = await axios.post("https://embedded.runalloy.com/2023-12/one/users", { username: userId }, { headers });
+      const { data } = await axios.post("https://embedded.runalloy.com/2023-12/one/users", { connectionId: userId }, { headers });
       res.status(200).send(data);
     } catch (err) {
       console.error(err); // Log the error to the console
@@ -83,7 +85,19 @@ app.get("/token/:userId", async (req, res) => {
       res.status(200).json(response.data);
     } catch (error) {
       console.error('Error creating invoice:', error);
-      res.status(500).send({ success: false, message: 'Failed to create invoice', error: error.message });
+      if (error.response) {
+        // The request was made and the server responded with an error status code
+        console.error('Error response:', error.response.data);
+        res.status(error.response.status).send({ success: false, message: 'Failed to create invoice', error: error.response.data });
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('Error request:', error.request);
+        res.status(500).send({ success: false, message: 'Failed to create invoice', error: "The request was made but no response was received" });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error message:', error.message);
+        res.status(500).send({ success: false, message: 'Failed to create invoice', error: error.message });
+      }
     }
   });
 

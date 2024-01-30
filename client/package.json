@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
     "name": "client",
     "version": "0.1.0",
     "private": true,
@@ -38,29 +37,4 @@
         ]
     },
     "proxy": "http://localhost:5000"
-=======
-    "name": "alloy-quickbooks-demo",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "babel src --out-dir dist"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "alloy-node": "^3.1.0",
-        "axios": "^1.6.7",
-        "cors": "^2.8.5",
-        "dotenv": "^16.4.1",
-        "express": "^4.18.2"
-    },
-    "devDependencies": {
-        "@babel/cli": "^7.23.9",
-        "@babel/core": "^7.23.9",
-        "@babel/preset-env": "^7.23.9"
-    }
->>>>>>> abfa584caafca319e5010670061fb80676c4773a
 }
