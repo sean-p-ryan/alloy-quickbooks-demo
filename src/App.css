@@ -1,0 +1,87 @@
+/* App.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    /* Lighter background for a modern look */
+}
+
+.form-style {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 20px;
+    background: #ffffff;
+    /* White background for the form */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Add some shadow for depth */
+    border-radius: 8px;
+    /* Rounded corners for the form */
+}
+
+.input-style {
+    margin: 10px 0;
+    padding: 8px;
+    width: 80%;
+    /* Responsive width */
+    border: 1px solid #ccc;
+    /* Subtle border */
+    border-radius: 4px;
+    /* Rounded corners for inputs */
+}
+
+.button-style {
+    padding: 10px 15px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+    /* Smooth transition for hover effect */
+}
+
+.button-style:hover {
+    background-color: #0056b3;
+    /* Darker shade for hover state */
+}
+
+.table-container {
+    margin-top: 20px;
+    width: 90%;
+    /* Responsive table container width */
+    overflow-x: auto;
+    /* Horizontal scroll for smaller screens */
+}
+
+.vendor-table {
+    border-collapse: collapse;
+    width: 100%;
+    background: #ffffff;
+    /* White background for the table */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Consistent shadow as the form */
+}
+
+.vendor-table th,
+.vendor-table td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 12px;
+    /* Increased padding for better readability */
+}
+
+.vendor-table th {
+    background-color: #007bff;
+    /* Header background */
+    color: white;
+    /* Header text color */
+    border-bottom: 2px solid #ddd;
+}
