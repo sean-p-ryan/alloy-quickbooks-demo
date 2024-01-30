@@ -16,7 +16,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
 const PORT = process.env.PORT || 5000;
 
 app.get('/api', (req, res) => {
@@ -65,45 +64,31 @@ app.get("/token/:userId", async (req, res) => {
     }
   });
 
-  app.post('/create-vendor', async (req, res) => {
-    const apiClient = new UAPI(process.env.ALLOY_API_KEY);
+  app.post('/create-invoice', async (req, res) => {
+    // Extract invoice details from the request body
+    const invoiceDetails = req.body;
+
+    // Define the request headers
+    const headers = {
+      'Authorization': `bearer ${process.env.ALLOY_API_KEY}`, // Use the API key from environment variables
+      'accept': 'application/json',
+      'content-type': 'application/json',
+    };
+  
     try {
-      // Connect the API client using a specific connectionId
-      await apiClient.connect("connectionId"); // Replace "connectionId" with your actual connection ID
+      // Send the request to the Alloy API
+      const response = await axios.post('https://embedded.runalloy.com/2023-12/one/accounting/invoices', invoiceDetails, { headers });
   
-      // Extract vendor details from the request body
-      const { vendorName, vendorStatus, addresses, phoneNumbers } = req.body;
-  
-      // Define the vendor creation payload
-      const body = {
-        vendorName,
-        vendorStatus,
-        addresses,
-        phoneNumbers,
-      };
-  
-      // Create the vendor using the Alloy API client
-      const data = await apiClient.Accounting.createVendor(body);
-  
-      // Send the response back to the client
-      res.json({ success: true, data });
+      // Respond with the data from the Alloy API
+      res.status(200).json(response.data);
     } catch (error) {
-      console.error('Failed to create vendor:', error);
-      res.status(500).send({ success: false, message: 'Failed to create vendor' });
+      console.error('Error creating invoice:', error);
+      res.status(500).send({ success: false, message: 'Failed to create invoice', error: error.message });
     }
   });
 
-  app.get('/fetch-vendors', async (req, res) => {
-    try {
-      // Make sure the API client is initialized and connected
-      await apiClient.connect("connectionId");
-  
-      const data = await apiClient.Accounting.listVendors();
-      res.json(data); // Send the vendors data back to the client
-    } catch (error) {
-      console.error('Failed to fetch vendors:', error);
-      res.status(500).send({ success: false, message: 'Failed to fetch vendors' });
-    }
+  app.get('/get-invoices', async (req, res) => {
+    // 
   });
   
 
