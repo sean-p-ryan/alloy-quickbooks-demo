@@ -4,7 +4,7 @@ import { baseUrl } from "./config";
 import './App.css';
 
 function App() {
-  const [showInput, setShowInput] = useState(true);
+  const [showJWT, setShowJWT] = useState(false);
   const [showUsernameInput, setShowUsernameInput] = useState(true);
   const [alloyUserId, setAlloyUserId] = useState("");
   const [connectionId, setConnectionId] = useState("");
@@ -26,7 +26,7 @@ function App() {
       const response = await axios.post(`${baseUrl}/user`, data);
       if (response) {
         setAlloyUserId(userId);
-        setShowInput(false);
+        setShowJWT(true);
         setShowUsernameInput(false);
       }
     } catch (err) {
@@ -54,7 +54,8 @@ function App() {
             }
           },
         });
-        setIsAuthenticated(true);
+        setShowJWT(false)
+        setIsAuthenticated(true)
       }
     } catch (err) {
       console.log(`There was an error: ${err}`);
@@ -69,7 +70,8 @@ function App() {
       lineItems: [
         {
           description: "November Services",
-          totalAmount: "2373.45" 
+          totalAmount: "2373.45", 
+          accountingItemId: "242325235sef323"
         }
       ],
       invoiceNumber: "7452", 
@@ -80,28 +82,26 @@ function App() {
     };
   
     try {
-      const response = await axios.post('/create-invoice', invoiceDetails);
+      const response = await axios.post(`/create-invoice/${connectionId}`, invoiceDetails);
       console.log('Invoice created:', response.data);
     } catch (error) {
       console.error('Error creating invoice:', error);
     }
   };
 
-  const getInvoices = async () => {
-    setShowInvoices(prevState => !prevState);
+  const listInvoices = async () => {
     try {
-      const response = await axios.get('/gets-invoices'); // Make sure the endpoint matches your server setup
-      setInvoices(response.data);
-      setShowInvoices(true); // Show the table after fetching the data
+      const response = await fetch('/list-invoices'); 
+      const invoices = await response.json();
+      console.log('Invoices:', invoices);
     } catch (error) {
-      console.error('Error fetching invoices:', error);
-      // Handle error appropriately
+      console.error('Error listing invoices:', error);
     }
   };
 
   return (
     <div className="container">
-      {showInput && <div className="form-style">
+      {showUsernameInput && <div className="form-style">
         <form className="form-style" onSubmit={handleFormSubmit}>
           <h1>Let's set up a QuickBooks integration with Alloy!</h1>
           <p>Enter a username to create an account</p>
@@ -110,7 +110,7 @@ function App() {
         </form>
       </div>}
 
-      {!showInput && <div className="form-style">
+      {showJWT && <div className="form-style">
         <button onClick={handleAuth} type="submit" className="button-style">Generate JWT</button>
       </div>}
 
@@ -120,7 +120,7 @@ function App() {
 
       {
         invoices.length > 0 && (
-          <button className="button-style" onClick={getInvoices}>Display invoices</button>
+          <button className="button-style" onClick={listInvoices}>Display invoices</button>
         )
       }
 
