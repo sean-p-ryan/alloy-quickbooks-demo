@@ -70,30 +70,33 @@ function App() {
       lineItems: [
         {
           description: "November Services",
-          totalAmount: "2373.45", 
+          totalAmount: "2373.45",
           accountingItemId: "242325235sef323"
         }
       ],
-      invoiceNumber: "7452", 
-      issueDate: "2023-12-10", 
-      dueDate: "2023-12-27", 
+      invoiceNumber: "7452",
+      issueDate: "2023-12-10",
+      dueDate: "2023-12-27",
       currency: "USD",
-      balance: 2373.45 
+      balance: 2373.45
     };
-  
+
     try {
       const response = await axios.post(`/create-invoice/${connectionId}`, invoiceDetails);
+      setInvoices(true);
       console.log('Invoice created:', response.data);
+
     } catch (error) {
       console.error('Error creating invoice:', error);
     }
   };
 
-  const listInvoices = async () => {
+  const getInvoices = async () => {
     try {
-      const response = await fetch('/list-invoices'); 
-      const invoices = await response.json();
-      console.log('Invoices:', invoices);
+      const response = await fetch(`/list-invoices/${connectionId}`);
+      const invoicesData = await response.json();
+      setInvoices(invoicesData); // Update the invoices state with the fetched data
+      setShowInvoices(true); // Set to true to display the invoices table
     } catch (error) {
       console.error('Error listing invoices:', error);
     }
@@ -115,41 +118,49 @@ function App() {
       </div>}
 
       {isAuthenticated && <div className="form-style">
-        <button onClick={() => createInvoice()}   type="submit" className="button-style">Create invoice in QuickBooks</button>
+        <button onClick={() => createInvoice()} type="submit" className="button-style">Create invoice in QuickBooks</button>
+      </div>}
+
+      {isAuthenticated && <div className="form-style">
+        <button onClick={() => createInvoice()} type="submit" className="button-style">Display invoices </button>
       </div>}
 
       {
         invoices.length > 0 && (
-          <button className="button-style" onClick={listInvoices}>Display invoices</button>
+          <button className="button-style" onClick={getInvoices}>Display invoices</button>
         )
       }
-
       {showInvoices && (
-        <div className="table-container">
-          <table className="invoice-table">
-            <thead>
-              <tr>
-                <th>invoice Name</th>
-                <th>Status</th>
-                <th>Billing Address</th>
-                <th>Phone Number</th>
+        <table className="table-style">
+          <thead>
+            <tr>
+              <th>Customer ID</th>
+              <th>Description</th>
+              <th>Total Amount</th>
+              <th>Invoice Number</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Currency</th>
+            </tr>
+          </thead>
+          <tbody>
+            {invoices.map((invoice, index) => (
+              <tr key={index}>
+                <td>{invoice.customerId}</td>
+                <td>{invoice.lineItems.map(item => item.description).join(', ')}</td>
+                <td>{invoice.lineItems.map(item => item.totalAmount).join(', ')}</td>
+                <td>{invoice.invoiceNumber}</td>
+                <td>{invoice.issueDate}</td>
+                <td>{invoice.dueDate}</td>
+                <td>{invoice.currency}</td>
               </tr>
-            </thead>
-            <tbody>
-              {invoices.map((invoice, index) => (
-                <tr key={index}>
-                  <td>{invoice.invoiceName}</td>
-                  <td>{invoice.invoiceStatus}</td>
-                  <td>{invoice.addresses.map(address => `${address.street1}, ${address.zipCode}, ${address.country}`).join(' | ')}</td>
-                  <td>{invoice.phoneNumbers.map(phone => phone.phoneNumber).join(', ')}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
-  );
+  )
+
 }
 
 export default App;

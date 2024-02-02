@@ -53,35 +53,24 @@
     /* Darker shade for hover state */
 }
 
-.table-container {
-    margin-top: 20px;
-    width: 90%;
-    /* Responsive table container width */
-    overflow-x: auto;
-    /* Horizontal scroll for smaller screens */
-}
-
-.vendor-table {
-    border-collapse: collapse;
+.table-style {
     width: 100%;
-    background: #ffffff;
-    /* White background for the table */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Consistent shadow as the form */
-}
-
-.vendor-table th,
-.vendor-table td {
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+  
+  .table-style th,
+  .table-style td {
     border: 1px solid #ddd;
+    padding: 8px;
     text-align: left;
-    padding: 12px;
-    /* Increased padding for better readability */
-}
-
-.vendor-table th {
-    background-color: #007bff;
-    /* Header background */
+  }
+  
+  .table-style th {
+    background-color: #04AA6D;
     color: white;
-    /* Header text color */
-    border-bottom: 2px solid #ddd;
-}
+  }
+  
+  .table-style tr:nth-child(even) {background-color: #f2f2f2;}
+  
+  .table-style tr:hover {background-color: #ddd;}

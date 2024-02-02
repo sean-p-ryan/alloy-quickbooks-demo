@@ -113,7 +113,7 @@ app.get("/token/:userId", async (req, res) => {
     }
   });
 
-  app.get('/list-invoices', async (req, res) => {
+  app.get('/list-invoices/:connectionId', async (req, res) => {
     const { connectionId } = req.query; // Extract connectionId from query parameters
   
     const options = {

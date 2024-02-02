@@ -77,7 +77,7 @@ app.get("/token/:userId", async (req, res) => {
   
     try {
       // Send the request to the Alloy API
-      const response = await axios.post('https://embedded.runalloy.com/2023-12/one/accounting/invoices', invoiceDetails, { headers });
+      const response = await axios.post(`https://embedded.runalloy.com/2023-12/one/accounting/invoices?connectionId=${req.params.connectionId}`, invoiceDetails, { headers });
   
       // Respond with the data from the Alloy API
       res.status(200).json(response.data);
@@ -87,8 +87,26 @@ app.get("/token/:userId", async (req, res) => {
     }
   });
 
-  app.get('/get-invoices', async (req, res) => {
-    // 
+  app.get('/list-invoices', async (req, res) => {
+    const { connectionId } = req.query; // Extract connectionId from query parameters
+  
+    // Define the request options, including the URL and headers
+    const options = {
+      method: 'GET',
+      url: `https://embedded.runalloy.com/2023-12/one/accounting/invoices?connectionId=${req.params.connectionId}`,
+      headers: {
+        accept: 'application/json',
+        Authorization: `bearer ${process.env.ALLOY_API_KEY}` // Use environment variable for API key
+      }
+    };
+  
+    try {
+      const response = await axios.request(options);
+      res.status(200).json(response.data); // Send the response data back to the client
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error fetching invoices');
+    }
   });
   
 
